@@ -22,13 +22,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_MINUTES = settings.REFRESH_TOKEN_EXPIRE_MINUTES
 
 credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 
-async def authenticate_user(db_session: AsyncSession, username: str, password: str) -> Users | None | bool:
+async def authenticate_user(
+    db_session: AsyncSession, username: str, password: str
+) -> Users | None | bool:
     user = await get_user(db_session, username)
     if not user:
         return False
@@ -42,9 +44,7 @@ async def get_user(db_session: AsyncSession, username: str) -> Users | None:
     Get user by username
     """
     user: Users = (
-        await db_session.execute(
-            select(Users).filter(Users.username == username)
-        )
+        await db_session.execute(select(Users).filter(Users.username == username))
     ).scalar_one_or_none()
     return user
 
@@ -57,21 +57,29 @@ def create_access_token(data: dict) -> (str, str):
     to_encode_access_token = data.copy()
     to_encode_refresh_token = data.copy()
 
-    access_token_expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    refresh_token_expire = datetime.utcnow() + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    access_token_expire = datetime.utcnow() + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+    refresh_token_expire = datetime.utcnow() + timedelta(
+        minutes=REFRESH_TOKEN_EXPIRE_MINUTES
+    )
 
     to_encode_access_token.update({"exp": access_token_expire})
     to_encode_refresh_token.update({"exp": refresh_token_expire})
 
-    encoded_access_jwt = jwt.encode(to_encode_access_token, SECRET_KEY, algorithm=ALGORITHM)
-    encoded_refresh_jwt = jwt.encode(to_encode_refresh_token, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_access_jwt = jwt.encode(
+        to_encode_access_token, SECRET_KEY, algorithm=ALGORITHM
+    )
+    encoded_refresh_jwt = jwt.encode(
+        to_encode_refresh_token, SECRET_KEY, algorithm=ALGORITHM
+    )
 
     return encoded_access_jwt, encoded_refresh_jwt
 
 
 async def get_current_user(
-        token: Annotated[str, Depends(oauth2_scheme)],
-        db_session=DbSessionDep,
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db_session: DbSessionDep,
 ) -> Users:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -103,9 +111,7 @@ def refresh_access_token(refresh_token: str | None = None) -> (str, str):
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        access_token, refresh_token = create_access_token(
-            {"sub": username}
-        )
+        access_token, refresh_token = create_access_token({"sub": username})
         return access_token, refresh_token
     except JWTError:
         raise credentials_exception
