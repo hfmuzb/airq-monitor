@@ -36,17 +36,6 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
-app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=settings.TRUSTED_HOSTS
-)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[str(i).rstrip("/") for i in settings.BACKEND_CORS_ORIGINS],
-    allow_credentials=True,
-    allow_methods=settings.ALLOWED_CORS_METHODS,
-    allow_headers=settings.ALLOWED_CORS_HEADERS,
-)
-
 # include routes here
 app.include_router(v1.api_router)
 
