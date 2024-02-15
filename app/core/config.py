@@ -40,7 +40,7 @@ class GlobalSettings(BaseSettings):
     SECRET_KEY: str = "super_secret_key"
     ALGORITHM: str = "HS256"
 
-    DATABASE_URL: Optional[PostgresDsn] = "postgresql://user:pass@localhost:6432/my_db"
+    DATABASE_URL: Optional[str] = "postgresql://user:pass@localhost:6432/my_db"
     DB_ECHO_LOG: bool = False
 
     @property

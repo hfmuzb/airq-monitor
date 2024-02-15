@@ -6,16 +6,17 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=postgresql://user:pass@postgres_db:6432/my_db
+      - DATABASE_URL=postgresql://user:pass@airq_app_db:5432/my_db
       - DB_ECHO_LOG=1
     ports:
       - "8001:8080"
 
   airq_app_db:
-        image: bitnami/postgresql:latest
-        environment:
-            - POSTGRESQL_USERNAME=user
-            - POSTGRESQL_PASSWORD=pass
-            - POSTGRESQL_DATABASE=my_db
-        ports:
-            - "6432:5432"
+    hostname: airq_app_db
+    image: bitnami/postgresql:latest
+    environment:
+        - POSTGRESQL_USERNAME=user
+        - POSTGRESQL_PASSWORD=pass
+        - POSTGRESQL_DATABASE=my_db
+    ports:
+        - "6432:5432"
