@@ -3,7 +3,7 @@ from enum import Enum
 from functools import lru_cache
 from typing import Optional, Set
 
-from pydantic import HttpUrl, PostgresDsn
+from pydantic import HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
