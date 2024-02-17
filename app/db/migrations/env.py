@@ -7,6 +7,7 @@ from alembic import context
 
 from db.models.base import Base  # noqa
 from db.models.users import Users  # noqa
+from db.models.devices import Devices, Measurements  # noqa
 from core.config import settings
 
 config = context.config
