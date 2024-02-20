@@ -14,7 +14,7 @@ class RoleChoices(enum.Enum):
 
 
 class Users(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_at = Column(DateTime, server_default=func.now())
@@ -22,6 +22,6 @@ class Users(Base):
     deleted_at = Column(DateTime)
 
     username = Column(String, nullable=False)
-    email = Column(String, nullable=False, default='default@default.com')
+    email = Column(String, nullable=False, default="default@default.com")
     password_hash = Column(String, nullable=False)
     role = Column(Enum(RoleChoices), nullable=False, default=RoleChoices.user)

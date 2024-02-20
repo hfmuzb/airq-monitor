@@ -2,6 +2,7 @@
 Pre-start script which is aimed:
  - wait until connection to db is established;
 """
+
 from loguru import logger
 
 from tenacity import retry, stop_after_attempt, wait_fixed
