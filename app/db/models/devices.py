@@ -19,6 +19,7 @@ class Devices(Base):
     lat = Column(DECIMAL, nullable=True, server_default=None)
     long = Column(DECIMAL, nullable=True, server_default=None)
     name = Column(String, nullable=True, server_default=None)
+    sensor_type = Column(String, nullable=True, server_default=None)
     uid = Column(String, nullable=False, unique=True)
 
 
@@ -29,6 +30,8 @@ class Measurements(Base):
     created_at = Column(DateTime, server_default=func.now())
     modified_at = Column(DateTime, server_onupdate=func.now())
     deleted_at = Column(DateTime)
+
+    time_ = Column(DateTime, nullable=True, server_default=None)
 
     pm1 = Column(DECIMAL, nullable=True, server_default=None)
     pm2_5 = Column(DECIMAL, nullable=True, server_default=None)
