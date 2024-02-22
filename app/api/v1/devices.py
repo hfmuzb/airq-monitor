@@ -52,6 +52,7 @@ async def post_measurement(
         device: DeviceSchema = await devices_crud.create(
             DeviceCreateSchema(
                 uid=data.device_id,
+                sensor_type=data.sensor_type,
             )
         )
         await devices_crud.commit_session()
