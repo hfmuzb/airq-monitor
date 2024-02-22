@@ -12,6 +12,9 @@ class MeasurementEncodedPayload(BaseModel):
 class MeasurementDecodedSchema(BaseSchema):
     device_id: str
     sensor_type: str | None = None
+    humidity: float | None = None
+    temperature: float | None = None
+    noise: float | str | None = None
     pm1: float | None = None
     pm2_5: float | None = None
     pm10: float | None = None
